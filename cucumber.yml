@@ -1,0 +1,3 @@
+
+test: --format html --out report.html --format pretty --tags @test -f rerun --out rerun.txt
+
