@@ -1,19 +1,16 @@
 Before do
+#  $driver = Selenium::WebDriver.for :ie
   $driver = Selenium::WebDriver.for :firefox
-  $driver.get $basicurl
-  $driver.manage.window.maximize
-  $delete_cookies
+  #$driver = Selenium::WebDriver.for :chrome
+   $driver.manage.window.maximize
+  # $delete_cookies
 end
 
 AfterStep do
   $driver.manage.timeouts.implicit_wait = 2
   sign_in_page.signup_popup_close
   #screen_actions.chat_popup_close
-
-
 end
-
-
 
 After do |scenario|
   if scenario.failed?
@@ -30,7 +27,6 @@ After do |scenario|
     embed("#{screenshot_file}", 'image/png')
   end
 
-
-# $driver.close
+#$driver.close
 $driver.quit
 end

@@ -68,7 +68,10 @@ class ScreenActions
       expect(sign_in_page.page_title).to eq(page_name.downcase)
 
     elsif page_name == 'Reset Password'
-      expect(sign_in_page.page_title).to eq("reset instructions sent")
+      expect(sign_in_page. page_title).to eq("reset instructions sent")
+
+    elsif page_name == 'Order Details'
+      expect().to eq("Cannot find order. Please, try again.")
 
     end
   end
@@ -80,8 +83,6 @@ class ScreenActions
   #     raise assets_element_was_not_found + "#{icon_name}"
   #   end
   # end
-
-
 
     def click
       begin

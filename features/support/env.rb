@@ -53,15 +53,24 @@ end
 def my_account_page
   @my_account_page ||= MyAccountPage.new
 end
+
 def my_buys
   @my_buys ||= MyBuys.new
 end
+
 def home_page
   @home_page ||= HomePage.new
 end
+
 def cartpage
   @cartpage ||= CartPage.new
 end
 def checkout_page
   @checkout_page ||= CheckoutPage.new
+end
+def cenpos
+  @cenpos ||= CenPos.new
+end
+def order_track
+  @order_track ||= OrderTrack.new
 end

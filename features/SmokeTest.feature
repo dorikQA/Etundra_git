@@ -2,24 +2,23 @@
 Feature: Smoke test
 
   Background:
-    Given Open "https://www.etundra.com" site
- # Given Open "https://www.etundra-test2.com" site
-
+   Given Open "https://www.etundra-test6.com" site
+  #  Given Open "https://www.etundra.com" site
+  # Given Open "https://www.etundra-test2.com" site
 #1 Smoke
-
   Scenario: Home Page - Categories menu verification
     Then Verify that menu contains categories:
       | Equipment          |
-#      | Parts              |
-#      | Plumbing           |
-#      | Kitchen            |
-#      | Dining Room        |
-#      | Disposables        |
-#      | Furniture          |
-#      | Specialty Supplies |
-#      | Clearance          |
-#      | Brands             |
-#      | More...            |
+      | Parts              |
+      | Plumbing           |
+      | Kitchen            |
+      | Dining Room        |
+      | Disposables        |
+      | Furniture          |
+      | Specialty Supplies |
+      | Clearance          |
+      | Brands             |
+      | More...            |
 #2 Smoke
   @smoke @demo
   Scenario Outline: Filter categories verification - facet menu
@@ -121,10 +120,9 @@ Feature: Smoke test
     Examples:
       | sku     |
       | ISI1007 |
-      #     | ISI1004 |
+      | ISI1004 |
 #      | 51309   |
 #      | 56102   |
-
 #9
   @smoke
    Scenario: Verify that user ables to open Account popup, popup contains links and use can close this pop up
@@ -157,7 +155,7 @@ Feature: Smoke test
     Then Verify "<username>" displayed
     Examples:
       | email                 | password  | username |
-      | t.d.etundra@gmail.com | Zxc123zxc | Tatsiana |
+      | t.d.etundra@gmail.com |Zxc123zxc | Tatsiana |
 
 #12
   @smoke
@@ -179,7 +177,6 @@ Feature: Smoke test
     Examples:
       | valid_email           | invalid_email     |
       | t.d.etundra@gmail.com | invalid@gmail.com |
-
 # 13
   @smoke @demo
   Scenario: User registration verification -User registration with valid random data
@@ -197,7 +194,6 @@ Feature: Smoke test
     And Verify user on "Home page" page
     When Click on "Account" icon
     Then Verify correct username displayed
-
 # 14
   @smoke @demo
   Scenario: User registration page - Errors handling verification
@@ -212,8 +208,7 @@ Feature: Smoke test
     And Verify error message "The Password field is required" displayed
     And Verify error message "The Retype Password field is required" displayed
     And Verify error message "The Company Type field is require" displayed
-
-    #15
+  #15
   @smoke @demo
   Scenario Outline: User should able Sign In trough Account - My account
     And Verify user on "Home page" page
@@ -234,7 +229,6 @@ Feature: Smoke test
     Examples:
       | email                 | password  | user_name | account_name        |
       | t.d.etundra@gmail.com | Zxc123zxc | Tatsiana  | Tatsiana Darashenka |
-
    #16
   Scenario Outline: Left menu categoru verivication
     Then Move mouse to the header "<category_name>"
@@ -252,10 +246,8 @@ Feature: Smoke test
 #      | Dining Room   |
 #      | Disposables   |
 #      | Furniture     |
-
 #17
-  @wip
-  Scenario Outline: Add trending item to cart and verify checkout page match requerments
+  Scenario Outline: Add trending item to cart and verify checkout page match requirements
     Then Add Trending item from home page to cart
     Then Open cart
     Then Click Proceed to Checkout button
@@ -278,20 +270,93 @@ Feature: Smoke test
   | email                 | password  |
   | t.d.etundra@gmail.com | Zxc123zxc |
 
-
-
   #18
-  @checkout
+  @checkout @tester
   Scenario Outline: Sign Out
     Then Click on "Account" icon
     Then Click "Sign In" link
     Then Enter email "<email>"
     And Enter valid password "<password>"
-    And Click "Sign Out" link
-
+    And Tap "Sign In" button
+    Then Click on "Account" icon
+    Then Click "Sign Out" link
+    And User should be logout
     Examples:
       | email                 | password  |
       | t.d.etundra@gmail.com | Zxc123zxc |
+
+#19
+  Scenario Outline:Checkout
+    Then Add Trending item from home page to cart
+    Then Open cart
+    Then Click Proceed to Checkout button
+    Then Enter email "<email>"
+    And Enter valid password "<password>"
+    And Tap "Sign In" button
+    Then Click Proceed to Checkout button
+    And Press "ADD NEW" button
+#    Then Enter "VISA" card number card month, year, cardholder name and cvv
+    Examples:
+      | email                   | password  |
+      | t.d.etundra10@gmail.com | 1234      |
+
+#20 @wip
+  Scenario: Tracking order - Valid order number and valid postal code
+    Then Click on "Track Order" icon
+    And Enter valid Order number
+    And Enter valid Postal code
+    Then Tap "Go" button
+    And Verify user relocated to "Order Details" page
+    And Verify message "Web Reference Number" displayed
+    And Verify message "Invoice Number" displayed
+    And Verify message "Order Date" displayed
+#21
+  Scenario: Tracking order - Empty order number and valid postal code
+    Then Click on "Track Order" icon
+   # And Enter empty Order number
+    And Enter valid Postal code
+    Then Tap "Go" button
+    And Verify user relocated to "Track Order" page
+    And Verify message "Please provide an order number" displayed
+#22
+  Scenario: Tracking order - invalid order number and valid postal code
+    Then Click on "Track Order" icon
+    And Enter invalid Order number
+    And Enter valid Postal code
+    Then Tap "Go" button
+    And Verify user relocated to "Track Order" page
+    And Verify message "Cannot find order. Please, try again" displayed
+    And Verify message "Please enter Order or Web Reference # and Destination Postal Code." displayed
+#23
+  Scenario: Tracking order - Valid order number and empty postal code
+    Then Click on "Track Order" icon
+    And Enter valid Order number
+  # And Enter empty Postal code
+    Then Tap "Go" button
+    And Verify user relocated to "Track Order" page
+    And Verify message "Please provide a destination postal code" displayed
+    And Verify message "Please enter Order or Web Reference # and Destination Postal Code." displayed
+#24
+  Scenario: Tracking order - Empty order number and empty postal code
+    Then Click on "Track Order" icon
+#   And Enter empty Order number
+#   And Enter empty Postal code
+    Then Tap "Go" button
+    And Verify user relocated to "Track Order" page
+    And Verify message "Please provide all information" displayed
+    And Verify message "Please enter Order or Web Reference # and Destination Postal Code." displayed
+
+  Scenario Outline:Checkout
+    Then Add Trending item from home page to cart
+    Then Open cart
+    Then Click Proceed to Checkout button
+    Then Enter email "<email>"
+    And Enter valid password "<password>"
+    And Tap "Sign In" button
+    Then Click Proceed to Checkout button
+    Examples:
+      | email                   | password    |
+      | t.d.etundra@gmail.com   | 123456      |
 
 
 

@@ -17,7 +17,31 @@ class CheckoutPage < ScreenActions
   end
   def whathappens_text_act
     $driver.find_element(:xpath, "//span[@class = 'checkout-summary-body']").text
+  end
+  def streetaddress
+    $driver.find_element(:id, "AddressLine1")
+  end
+  def addressapt
+    $driver.find_element(:id, "AddressLine2")
+  end
+  def city
+    $driver.find_element(:id, "City")
+  end
+  def state
+    $driver.find_element(:id, "State")
+  end
+  def zipcode
+    $driver.find_element(:id, "Postal")
+  end
 
+  def ship_firstname
+    $driver.find_element(:id, "FirstName")
+  end
+  def ship_lastname
+    $driver.find_element(:id, "LastName")
+  end
+  def ship_addressapt
+    $driver.find_element(:id, "AddressLine2")
   end
 
 

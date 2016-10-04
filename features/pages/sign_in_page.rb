@@ -166,15 +166,15 @@ class SignInPage < ScreenActions
     bullet3 = 'Be the first to find out about special offers and pricing'
     bullets_req = [bullet1, bullet2, bullet3]
   end
-
+  def sign_in_button
+    $driver.find_element(:xpath, "//button[@class = 'btn btn-primary' and text() = 'Sign In']")
+  end
 
   # def register_field(register_field)
   #   $driver.find_element(:xpath,"//form[@class = ' register-form']//input[@id = '#{register_field}]")
   # end
 
-  # def sign_in_button
-  #   $driver.find_element(:xpath, "//button[@class = 'btn btn-primary' and text() = 'Sign In']")
-  # end
+
   # def forgot_pass_link
   #   $driver.find_element(:link_text, "Forgot your password?")
   # end

@@ -26,13 +26,19 @@ class PageHeader < ScreenActions
 
   ####################################
 
-  def account_icon_option(popover_option)
-    $driver.find_element(:xpath, "//span[@class = 'menu-label' and text() = '#{popover_option}']")
+  # def account_icon_option(popover_option)
+  #   $driver.find_element(:xpath, "//span[@class = 'menu-label' and text() = '#{popover_option}']")
+  # end
+  def header_icon(icon_name)
+      $driver.find_element(:xpath, "//span[contains(text(),'#{icon_name}')]")
+  end
+
+  def track_order(field_name)
+  $driver.find_element(:xpath,"//input[@placeholder = '#{field_name}']")
   end
 
   def account_popover_close_button
     $wait.until { $driver.find_element(:xpath, "//button[@class = 'close']") }
-
   end
 
   def account_popover_header
@@ -102,12 +108,5 @@ class PageHeader < ScreenActions
   #   $driver.find_element(:xpath,"//div[@class = 'input-group']//span[@class = 'input-group-btn']")
   # end
 
-  # def account_icon
-  #   begin
-  #     account_icon = $wait.until { $driver.find_element(:xpath,"//div[@class = 'mnu mnu-account']")}
-  #   rescue
-  #     raise assets_element_was_not_found + "#{account_icon}"
-  #   end
-  # end
-  ######################
+
 end
