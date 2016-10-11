@@ -18,15 +18,9 @@ class OrderTrack< ScreenActions
   #   $driver.find_element(:xpath,"//h1[contains(text(), 'Track Order')]")
   # end
 
-  def message(message)
-    $driver.find_elements(:xpath,"//*[contains(text(), '#{message}')]")
-  end
 
   def page_name(title)
     $driver.find_elements(:xpath,"//h1[contains(text(), '#{title}')]")
   end
 
-
-
-
-    end
+  end

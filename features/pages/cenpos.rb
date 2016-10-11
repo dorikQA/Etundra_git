@@ -4,6 +4,7 @@ class CenPos < ScreenActions
     $driver.switch_to.frame("cenposPayIFrameId")
 
   end
+
   def cenposout
     $driver.switch_to.frame("cenposPayIFrameId")
   end
@@ -11,43 +12,49 @@ class CenPos < ScreenActions
   def card_number(card_name)
     if card_name == 'VISA'
       card_number = "4011111111111"
-     end
+    end
     @@card_number = card_number
+  end
 
-end
+  def card_month
+    @@card_month = "12"
 
-def card_month
-  @@card_month = "12"
+  end
 
-end
   def card_year
     @@card_year = "18"
   end
-def cardholder
-  @@card_holder_name = "Tester Tester"
 
-end
+  def cardholder
+    @@card_holder_name = "Tester Tester"
 
-def card_cvv
-  @cvv = '567'
-end
-  ##css cenpos fields
-def card_number_field
- $wait.until {$driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input") }
-
-end
-def card_month_field
-  $wait.until {$driver.find_element(:css, "input[name = 'month']")}
-end
-def card_year_field
-  $driver.find_element(:css,"input[name = 'year']")
-end
-def cardholder_name_field
-  $driver.find_element(:css, "input[name = 'cardName']")
   end
-def card_cvv_field
-  $driver.find_element(:css, "input[name = 'cvv']")
-end
+
+  def card_cvv
+    @cvv = '567'
+  end
+
+  ##css cenpos fields
+  def card_number_field
+    $wait.until { $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input") }
+
+  end
+
+  def card_month_field
+    $wait.until { $driver.find_element(:css, "input[name = 'month']") }
+  end
+
+  def card_year_field
+    $driver.find_element(:css, "input[name = 'year']")
+  end
+
+  def cardholder_name_field
+    $driver.find_element(:css, "input[name = 'cardName']")
+  end
+
+  def card_cvv_field
+    $driver.find_element(:css, "input[name = 'cvv']")
+  end
 
 end
 # $driver.find_element(:id, "dialog-4109")

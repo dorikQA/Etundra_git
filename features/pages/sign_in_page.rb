@@ -96,12 +96,12 @@ class SignInPage < ScreenActions
     $wait.until{ $driver.find_element(:xpath, "//div[@class = 'email form-group ']//input[@id = 'EmailAddress']")}
   end
 
-  def forgot_page_elements
-    $wait.until { screen_actions.button_value('Reset Password') }
-    $wait.until { screen_actions.link_name("Return to Login") }
+  #
+  # def forgot_page_elements(link_name)
+  #   $wait.until { screen_actions.button_value('Reset Password') }
+  #   $wait.until { screen_actions.link_name("#{link_name}") }
+  # end
 
-
-  end
   def forgot_page_text_act
     $driver.find_element(:xpath, "//div[@class = 'need-help form-group']/*").text
   end
@@ -169,6 +169,7 @@ class SignInPage < ScreenActions
   def sign_in_button
     $driver.find_element(:xpath, "//button[@class = 'btn btn-primary' and text() = 'Sign In']")
   end
+
 
   # def register_field(register_field)
   #   $driver.find_element(:xpath,"//form[@class = ' register-form']//input[@id = '#{register_field}]")

@@ -4,7 +4,6 @@ require_relative 'list_items_page'
 
 class ItemPage < ScreenActions
 
-
   def item_full_name
     $driver.find_elements(:xpath, "//span[@class = 'product-fullname']")
   end
@@ -31,7 +30,6 @@ class ItemPage < ScreenActions
 
 #***********************************************************************************************************************
 
-
   def mybuys_relatedproducts_itemprices
     $driver.find_elements(:xpath, "//div[@class = 'related mybuys-container']//span[@class = 'amount']")
   end
@@ -51,11 +49,7 @@ class ItemPage < ScreenActions
   def mybuys_relatedproducts_sku
     $driver.find_elements(:xpath, "//div[@class = 'related mybuys-container']//div[@class = 'product-sku']")
   end
-
-end
-
 #***********************************************************************************************************************
-
 def mybuys_alsobought_itemprices
   $driver.find_elements(:xpath, "//div[@class = 'also-bought mybuys-container']//span[@class = 'amount']")
 end
@@ -78,7 +72,4 @@ end
 
 
 #***********************************************************************************************************************
-
-def mybuys_alsobought_itemprices
-
 end

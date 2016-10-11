@@ -55,14 +55,15 @@ class FacetMenu < ScreenActions
   def stockedtip_req
     stockedtip = 'STOCKED items typically ship out same day Monday through Friday (excluding holidays) when the order is placed before 4:30 PM Mountain Time.' 'STOCKED items typically ship out same day Monday through Friday (excluding holidays) when the order is placed before 4:30 PM Mountain Time.'.downcase
   end
+
   #*********************************************************
   def subcategories_links
-    $wait.until{$driver.find_elements(:xpath,("//div[@class = 'cat-nav panel-collapse sub-categories collapse in']//a"))}
+    $wait.until { $driver.find_elements(:xpath, ("//div[@class = 'cat-nav panel-collapse sub-categories collapse in']//a")) }
 
   end
 
   def brands_links
-    $wait.until{$driver.find_elements(:xpath,("//div[@class = 'cat-nav panel-collapse brands collapse in']//a"))}
+    $wait.until { $driver.find_elements(:xpath, ("//div[@class = 'cat-nav panel-collapse brands collapse in']//a")) }
   end
 
 

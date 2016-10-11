@@ -19,7 +19,6 @@ class Browser
 
   def open_page(url)
     @driver.navigate.to(url)
-
     GoogleHomePage.new(@driver)
   end
 
@@ -30,7 +29,6 @@ class Browser
   def set_window_size(screen_width, screen_height)
     screen_width   ? screen_width   : screen_width   = 1280
     screen_height  ? screen_height  : screen_height  = 1024
-
     @driver.manage.window.resize_to(screen_width, screen_height)
   end
 
@@ -43,7 +41,7 @@ class Browser
     else
       driver = Selenium::WebDriver.for :chrome
     end
-
-    driver
+   driver
   end
+
 end

@@ -74,7 +74,6 @@ Feature: Home page
 #      | Specialty Supplies |
 #      | Clearance          |
 #  #5
-
   Scenario Outline: Verification of Stocked Item in Specials and quantity of items
     Then Click on category "<category_name>"
     And Verify this category "Specials" includes "Stocked Item" items
@@ -92,7 +91,6 @@ Feature: Home page
       | Specialty Supplies |
       | Clearance          |
 ##6
-
   Scenario Outline: Search by product name functionality
     Then Enter "<product_name>" to search field
     Then Press "Search" button
@@ -107,7 +105,6 @@ Feature: Home page
       | ewfhgkh      |
       | 250          |
 #7
-
   Scenario Outline: Search by product name functionality - verify that some search redirect user to brand page
     Then Enter "<product_name>" to search field
     Then Press "Search" button
@@ -215,7 +212,7 @@ Feature: Home page
   Scenario Outline: Forgot password functionality- Invalid email
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     And "Forgot Password" page should display title, correct messages, buttons
     Then Enter "<email>" for resetting password
     Then Press "Reset Password" button
@@ -228,7 +225,7 @@ Feature: Home page
   Scenario: Forgot password funtionality - Empty email
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     Then Press "Reset Password" button
     Then Verify error message "The Email Address field is required" displayed
 
@@ -236,7 +233,7 @@ Feature: Home page
   Scenario Outline: Forgot password functionality- Correct email
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     Then Enter "<email>" for resetting password
     Then Press "Reset Password" button
     And Verify Reset page displayed with correct text and title, "<email>"
@@ -247,7 +244,7 @@ Feature: Home page
   Scenario Outline: Forgot password functionality- combination of scenarios
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     And Verify user on "Forgot Password" page
     And  "Forgot Password" page should display title, correct messages, buttons and "<valid_email>" if required
     Then Press "Reset Password" button
@@ -460,7 +457,7 @@ Feature: Home page
   Scenario Outline: Forgot password functionality- combination of scenarios
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     And Verify user on "Forgot Password" page
     And  "Forgot Password" page should display title, correct messages, buttons and "<valid_email>" if required
     Then Press "Reset Password" button

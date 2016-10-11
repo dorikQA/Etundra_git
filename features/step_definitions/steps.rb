@@ -16,9 +16,11 @@ And(/^Click on category "([^"]*)"$/) do |category_name|
   $driver.mouse.move_to page_header.logo_image
 
 end
+
 Then /^Verify that user on "([^"]*)" page$/ do |brandname|
   expect(brand_page.page_title.text.downcase).to eq(brandname.downcase)
 end
+
 Then /^Verify that user located on "([^"]*)" page$/ do |pagetitle|
   expect(category_page.pagetitle.text.downcase).to eq(pagetitle.downcase)
 end
@@ -120,27 +122,15 @@ Then /^"My account" popover contains links:$/ do |accountlinks|
   end
 end
 
-Then /^Tap to close My Account button$/ do
-  $driver.mouse.move_to page_header.account_popover_close_button
-  page_header.account_popover_close_button.click
-
-  # expect(close_button.displayed?).to be true, "expected button to be displayed, got #{close_button.inspect}'"
-end
 
 Then /^Verify My Account popup was closed$/ do
  expect(page_header.account_popover_header.count).to be == 0
 end
 
-# Then(/^Click on "([^"]*)" icon$/) do |icon_name|
-#   sleep 5
-#   $driver.mouse.move_to page_header.header_icon(icon_name)
-#
-#   page_header.header_icon(icon_name).click
-#   $driver.mouse.move_to page_header.logo_image
-# end
 
 Then(/^Click on "([^"]*)" icon$/) do |icon_name|
     $driver.mouse.move_to page_header.header_icon(icon_name)
+    $wait.until { page_header.header_icon(icon_name)}
     page_header.header_icon(icon_name).click
     if icon_name  == "Account"
     $driver.mouse.move_to page_header.logo_image
@@ -149,23 +139,58 @@ Then(/^Click on "([^"]*)" icon$/) do |icon_name|
 end
 
 Then /^Click "([^"]*)" link$/ do |link_name|
-  page_header.link_name(link_name).click
-end
+ # page_header.myaccount_links(link_name).click
 
-Then(/^Enter email "([^"]*)"$/) do |email|
-  sign_in_page.sign_in_email_field.send_keys email
+  if link_name == "Sign In" || link_name == "My Account" || link_name =="Sign Out"
+    $wait.until {page_header.myaccount_links(link_name)}
+    page_header.myaccount_links(link_name).click
+  else
+    $wait.until {screen_actions.link_name(link_name)}
+    screen_actions.link_name(link_name).click
+
+ end
+
 end
 
 And(/^Enter valid password "([^"]*)"$/) do |password|
   sign_in_page.sign_in_password.send_keys password
 end
-Then /^Tap "([^"]*)" button$/ do |button_name|
-#  element =  $driver.find_element(:id,"menu-primary-section").click
-  # $driver.mouse.move_to element
-  # element.click
- sign_in_page.button_name(button_name).click
+Then(/^Enter email "([^"]*)"$/) do |email|
+  sign_in_page.sign_in_email_field.send_keys email
 end
 
+
+
+Then /^Tap "([^"]*)" button$/ do |button_name|
+  if button_name == "Sign In" || button_name == "Register" || button_name == "Go" ||button_name == "PLACE YOUR ORDER"
+    $wait.until {sign_in_page.button_name(button_name)}
+    sign_in_page.button_name(button_name).click
+  elsif button_name == "Search" || button_name == "Reset Password" || button_name == "ADD NEW"
+    $wait.until {screen_actions.button_value(button_name)}.click
+  elsif button_name == "My Account"
+      $driver.mouse.move_to page_header.account_popover_close_button
+      page_header.account_popover_close_button.click
+  elsif button_name == "Proceed to Checkout"
+    $driver.mouse.move_to page_header.logo_image
+    cartpage.coupon_code_header.location_once_scrolled_into_view
+    cartpage.proceed_checkout_button.location_once_scrolled_into_view
+    cartpage.coupon_code_header.location_once_scrolled_into_view
+    # $driver.mouse.move_to cartpage.proceed_checkout_button
+    sleep 1
+    cartpage.proceed_checkout_button.click
+  end
+end
+
+Then /^Tap to close My Account button$/ do
+  $driver.mouse.move_to page_header.account_popover_close_button
+  page_header.account_popover_close_button.click
+
+  # expect(close_button.displayed?).to be true, "expected button to be displayed, got #{close_button.inspect}'"
+end
+
+Then /^Tap "([^"]*)" plus button$/ do |section_name|
+  my_account_page.my_accound_expand_details(section_name).click
+end
 
 Then /^Verify "Sign In" side title and text$/ do
   expect(sign_in_page.sign_in_title).to eq(sign_in_page.sign_in_title_req)
@@ -187,23 +212,16 @@ Then /^Verify "([^"]*)" displayed$/ do |username|
   expect(username_act).to eq(username)
 end
 
-And /^Tap "([^"]*)" link$/ do |link_name|
-  sign_in_page.link_name(link_name).click
-end
-
 Then(/^Verify error message "([^"]*)" displayed$/) do |error_message|
-  sign_in_page.field_req_error_message(error_message)
+  #(screen_actions.error_message).to include(error_message)
+  expect(screen_actions.error_message(error_message).count > 0).to be true
+
 end
 
 Then /^Enter "([^"]*)" for resetting password$/ do |email|
   sign_in_page.forgot_pass_email.clear
   sign_in_page.forgot_pass_email.send_keys(email)
 end
-
-Then /^Press "([^"]*)" button$/ do |button_name|
-  screen_actions.button_value(button_name).click
-end
-
 Then /^ Verify page notifies user that email is not associated$/ do
   expect
 end
@@ -248,21 +266,11 @@ Then /^From dropdown select "([^"]*)" company business type$/ do |bussiness_type
   bisseness_type_drop.select_by(:value, "#{bussiness_type}")
 end
 
-Then /^Click My Account link?/ do
-  page_header.my_account_link.click
-end
-
 Then /^Verify user on "([^"]*)" page$/ do |page_name|
   screen_actions.page_verification(page_name)
 end
 
-Then /^Tap "([^"]*)" plus button$/ do |section_name|
-  my_account_page.my_accound_expand_details(section_name).click
-end
 
-Then /^Test "([^"]*)"$/ do |button_name|
-  screen_actions.button_value(button_name).click
-end
 
 Then /^"([^"]*)" page should display title, correct messages, buttons and "([^"]*)" if required$/ do |page_name, valid_email|
   if page_name == 'Forgot Password'
@@ -334,16 +342,6 @@ Then /^Open cart$/ do
   page_header.cart_icon.click
 end
 
-Then /^Click Proceed to Checkout button$/ do
-  $driver.mouse.move_to page_header.logo_image
-  cartpage.coupon_code_header.location_once_scrolled_into_view
-  cartpage.proceed_checkout_button.location_once_scrolled_into_view
-  cartpage.coupon_code_header.location_once_scrolled_into_view
-  # $driver.mouse.move_to cartpage.proceed_checkout_button
-  sleep 1
-  cartpage.proceed_checkout_button.click
-end
-
 Then /^Verify checkout page contain required sections$/ do
    expect(checkout_page.checkout_headers).to match_array ["Contact Information", "Secure Billing", "Shipping Address", "Order Summary", "Shipping Options", "PO Number", "Coupon Code"]
 end
@@ -377,6 +375,76 @@ And /^User should be logout$/ do
   page_header.account_icon("Account").click
   expect((page_header.link_name("Sign In")).displayed?).to be true
 end
+
+Then /^Enter valid card month$/ do
+  cenpos.cenposframe
+  cenpos.card_number_field.send_keys "4011111111111"
+  $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:tab)
+  elem =  cenpos.card_month_field
+  $driver.execute_script("arguments[0].style.display='block'", $driver.find_element(:css, "input[name = 'cvv']"))
+  cenpos.card_month_field.click
+  elem.send_keys "12"
+end
+
+Then (/Enter (valid|invalid|empty) (Order number|Postal code)$/) do |state, field_name|
+
+  if state == "valid" && field_name == "Order number"
+    page_header.track_order(field_name).send_keys "2000018"
+
+  elsif state == "valid" && field_name == "Postal code"
+    page_header.track_order(field_name).send_keys "80305"
+
+  elsif state == "invalid" && field_name ==  "Order number"
+    page_header.track_order(field_name).send_keys "0000018"
+
+  elsif state == "invalid" && field_name == "Postal code"
+    page_header.track_order(field_name).send_keys "88885"
+
+  end
+
+end
+
+Then /^Verify message "([^"]*)" displayed$/ do |message|
+  expect(order_track.message(message).count > 0).to be true
+end
+
+And /^Verify user relocated to "([^"]*)" page$/ do |title|
+  expect(order_track.page_name(title).count > 0).to be true
+end
+
+#
+# Then /^Click Proceed to Checkout button$/ do
+#   $driver.mouse.move_to page_header.logo_image
+#   cartpage.coupon_code_header.location_once_scrolled_into_view
+#   cartpage.proceed_checkout_button.location_once_scrolled_into_view
+#   cartpage.coupon_code_header.location_once_scrolled_into_view
+#   # $driver.mouse.move_to cartpage.proceed_checkout_button
+#   sleep 1
+#   cartpage.proceed_checkout_button.click
+# end
+
+
+
+
+# Then /^Press "([^"]*)" button$/ do |button_value|
+#   screen_actions.button_value(button_value).click
+# end
+# Then /^Test "([^"]*)"$/ do |button_value|
+#   screen_actions.button_value(button_value).click
+# end
+
+# Then(/^Click on "([^"]*)" icon$/) do |icon_name|
+#   sleep 5
+#   $driver.mouse.move_to page_header.header_icon(icon_name)
+#
+#   page_header.header_icon(icon_name).click
+#   $driver.mouse.move_to page_header.logo_image
+# end
+
+
+# And /^Tap "([^"]*)" link$/ do |link_name|
+#   screen_actions.link_name(link_name).click
+# end
 #
 #
 # Then /^Enter "([^"]*)" card number$/ do |card_name|
@@ -400,60 +468,31 @@ end
 #   # credit_cards.cardholder_name_field.send_keys credit_cards.cardholder
 #   # credit_cards.card_cvv.send_keys credit_cards.card_cvv
 # end
-Then /^Enter valid card month$/ do
-  cenpos.cenposframe
-  cenpos.card_number_field.send_keys "4011111111111"
-  $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:tab)
-  elem =  cenpos.card_month_field
-  $driver.execute_script("arguments[0].style.display='block'", $driver.find_element(:css, "input[name = 'cvv']"))
-  cenpos.card_month_field.click
-  elem.send_keys "12"
-
-  # $driver.execute_script("arguments[0].style.visibility = 'visible'", cenpos.card_month_field)
-  # cenpos.card_month_field.click
-  #
-  #  elem.send_keys "12"
-  # $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:tab)
-  # $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:return)
-  # $driver.switch_to.default_content
-  #$driver.execute_script("return arguments[0].tagName" , elem)
-  # cenpos.card_month_field.send_keys cenpos.card_month
-  # cenpos.card_number_field.send_keys "4011111111111"
-  # cen_pos.card_number_field.send_keys (:tab)
-  # sleep 5
-  # cenpos.card_month_field.send_keys cenpos.card_month
-  # cenpos.card_year_field.send_keys cenpos.card_year
-  # cenpos.cardholder_name_field.send_keys cenpos.cardholder
-  # cenpos.card_cvv.send_keys cenpos.card_cvv
-
-end
-
-Then (/Enter (valid|invalid|empty) (Order number|Postal code)$/) do |state, field_name|
-
-  if state == "valid" && field_name == "Order number"
-    page_header.track_order(field_name).send_keys "2000018"
-
-  elsif state == "valid" && field_name == "Postal code"
-    page_header.track_order(field_name).send_keys "80305"
-
-  elsif state == "invalid" && field_name ==  "Order number"
-    page_header.track_order(field_name).send_keys "0000018"
-
-  elsif state == "invalid" && field_name == "Postal code"
-    page_header.track_order(field_name).send_keys "88885"
-
-  end
-
-end
-
-Then /^Verify message "([^"]*)" displayed$/ do |message|
-  expect(order_track.message(message).count > 0).to be true
-  #
-end
-
-And /^Verify user relocated to "([^"]*)" page$/ do |title|
-   expect(order_track.page_name(title).count > 0).to be true
-end
-
-
-
+#
+# Then /^Enter valid card month$/ do
+#   cenpos.cenposframe
+#   cenpos.card_number_field.send_keys "4011111111111"
+#   $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:tab)
+#   elem =  cenpos.card_month_field
+#   $driver.execute_script("arguments[0].style.display='block'", $driver.find_element(:css, "input[name = 'cvv']"))
+#   cenpos.card_month_field.click
+#   elem.send_keys "12"
+#
+#   # $driver.execute_script("arguments[0].style.visibility = 'visible'", cenpos.card_month_field)
+#   # cenpos.card_month_field.click
+#   #
+#   #  elem.send_keys "12"
+#   # $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:tab)
+#   # $driver.find_element(:xpath, "//div[@class = 'row rowcardNumber']//input").send_keys (:return)
+#   # $driver.switch_to.default_content
+#   #$driver.execute_script("return arguments[0].tagName" , elem)
+#   # cenpos.card_month_field.send_keys cenpos.card_month
+#   # cenpos.card_number_field.send_keys "4011111111111"
+#   # cen_pos.card_number_field.send_keys (:tab)
+#   # sleep 5
+#   # cenpos.card_month_field.send_keys cenpos.card_month
+#   # cenpos.card_year_field.send_keys cenpos.card_year
+#   # cenpos.cardholder_name_field.send_keys cenpos.cardholder
+#   # cenpos.card_cvv.send_keys cenpos.card_cvv
+#
+# end

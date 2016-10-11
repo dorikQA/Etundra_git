@@ -2,10 +2,12 @@
 Feature: Smoke test
 
   Background:
-   Given Open "https://www.etundra-test6.com" site
+   Given Open "https://www.etundra.com" site
   #  Given Open "https://www.etundra.com" site
-  # Given Open "https://www.etundra-test2.com" site
-#1 Smoke
+  # Given Open "https://www.etundra-test6.com" site
+
+#1
+  @qa
   Scenario: Home Page - Categories menu verification
     Then Verify that menu contains categories:
       | Equipment          |
@@ -19,9 +21,9 @@ Feature: Smoke test
       | Clearance          |
       | Brands             |
       | More...            |
-#2 Smoke
-  @smoke @demo
-  Scenario Outline: Filter categories verification - facet menu
+#2
+  @qa
+  Scenario Outline:  Filter categories verification - facet menu
     Then Click on category "<category_name>"
     And Verify that user located on "<pagetitle>" page
     Examples:
@@ -35,7 +37,25 @@ Feature: Smoke test
       | Furniture          | Restaurant Furniture                               |
       | Specialty Supplies | Specialty Shop Supplies                            |
       | Clearance          | Discount Restaurant Equipment and Kitchen Supplies |
-##3
+
+
+  Scenario: Page title verification - User should see correct page title for each category
+
+    When Click on category "Parts"
+
+    Then ser located on "Restaurant Equipment Parts & Hardware"
+
+    Then Verify when user clicks on category "Equipment" he should  "Commercial Restaurant Equipment" page
+     When When user click on category "Plumbing" user located on "Commercial Plumbing Supplies
+    When When user click on category "Kitchen" user located on "Kitchen Supplies"
+    When When user click on category "Dining Room" user located on "Restaurant Dining Room Supplies"
+    When When user click on category "Furniture" user located on "Restaurant Furniture"
+    When When user click on category "Specialty Supplies" user located on "Specialty Shop Supplies"
+    When When user click on category "Specialty Supplies" user located on "Specialty Shop Supplies"
+
+    And Verify that user located on "Commercial Restaurant Equipment" page
+
+#3
   @smoke
   Scenario Outline: Verify that each category from list below contains required facet filter category
     Then Click on category "<category_name>"
@@ -76,11 +96,12 @@ Feature: Smoke test
 #      | Furniture          |
 #      | Specialty Supplies |
 #      | Clearance          |
-##5
-  @smoke
+
+#5
+  @smoke @search
   Scenario Outline: Search by Product Name functionality
     Then Enter "<product_name>" to search field
-    Then Press "Search" button
+    Then Tap "Search" button
     And Verify the title of page display "<product_name>" page displays correct product name sections
     And Search result should display qty products found
     Then Message "Search was unable to find any results" should be displayed of no products found
@@ -88,31 +109,31 @@ Feature: Smoke test
       | product_name |
       | vitamix      |
 #6
-  @smoke
+  @smoke @search
   Scenario Outline: Search by product name functionality - verify that some search redirect user to brand page
     Then Enter "<product_name>" to search field
-    Then Press "Search" button
+    Then Tap "Search" button
     And Verify that user on "<brandname>" page
     Examples:
       | product_name | brandname |
       | cambro       | cambro    |
 
 #7
-  @smoke
+  @smoke @search
   Scenario Outline: Search by item number functionality
     Then Enter "<item_code>" to search field
-    Then Press "Search" button
+    Then Tap "Search" button
     And Verify item title contains "<item_code>"
     Examples:
       | item_code |
       | 990042400 |
-      | RL35-0000 |
+#      | RL35-0000 |
 #      | 114251    |
 #      | 5400      |
 #      | WB-4      |
 
 #8
-  @smoke
+  @smoke @search
   Scenario Outline: Search by SKU functionality
     Then Enter "<sku>" to search field
     Then Press "Enter" on keyboard
@@ -120,8 +141,8 @@ Feature: Smoke test
     Examples:
       | sku     |
       | ISI1007 |
-      | ISI1004 |
-#      | 51309   |
+#      | ISI1004 |
+      | 51309   |
 #      | 56102   |
 #9
   @smoke
@@ -155,23 +176,23 @@ Feature: Smoke test
     Then Verify "<username>" displayed
     Examples:
       | email                 | password  | username |
-      | t.d.etundra@gmail.com |Zxc123zxc | Tatsiana |
+      | t.d.etundra@gmail.com |123456 | Tatsiana |
 
 #12
   @smoke
   Scenario Outline: Forgot password functionality- combination of scenarios
     Then Click on "Account" icon
     Then Click "Sign In" link
-    Then Tap "Forgot your password?" link
+    Then Click "Forgot your password?" link
     And Verify user on "Forgot Password" page
     And  "Forgot Password" page should display title, correct messages, buttons and "<valid_email>" if required
-    Then Press "Reset Password" button
+    Then Tap "Reset Password" button
     Then Verify error message "The Email Address field is required" displayed
     Then Enter "<invalid_email>" for resetting password
-    Then Press "Reset Password" button
+    Then Tap "Reset Password" button
     And Verify user on "Forgot Password" page
     Then Enter "<valid_email>" for resetting password
-    Then Press "Reset Password" button
+    Then Tap "Reset Password" button
     And Verify user on "Reset Password" page
     And "Reset Password" page should display title, correct messages, buttons and "<valid_email>" if required
     Examples:
@@ -214,7 +235,7 @@ Feature: Smoke test
     And Verify user on "Home page" page
     Then Click on "Account" icon
    #Then Click "Sign In" link
-    Then Click My Account link
+    Then Click "My Account" link
     Then Enter email "<email>"
     And Enter valid password "<password>"
     And Tap "Sign In" button
@@ -228,8 +249,9 @@ Feature: Smoke test
 
     Examples:
       | email                 | password  | user_name | account_name        |
-      | t.d.etundra@gmail.com | Zxc123zxc | Tatsiana  | Tatsiana Darashenka |
-   #16
+      | t.d.etundra@gmail.com | 123456 | Tatsiana  | Tatsiana Darashenka |
+
+  #16
   Scenario Outline: Left menu categoru verivication
     Then Move mouse to the header "<category_name>"
     And Verify "<category_name>" pop-window displays subcategories and brands links
@@ -246,15 +268,16 @@ Feature: Smoke test
 #      | Dining Room   |
 #      | Disposables   |
 #      | Furniture     |
+
 #17
   Scenario Outline: Add trending item to cart and verify checkout page match requirements
     Then Add Trending item from home page to cart
     Then Open cart
-    Then Click Proceed to Checkout button
+    Then Tap "Proceed to Checkout" button
     Then Enter email "<email>"
     And Enter valid password "<password>"
     And Tap "Sign In" button
-    Then Click Proceed to Checkout button
+    Then Tap "Proceed to Checkout" button
     And Verify checkout page contain required sections
 #      | Contact Information |
 #      | Secure Billing      |
@@ -268,7 +291,7 @@ Feature: Smoke test
  # Please ensure all information is correct before submitting. By clicking \"Place Your Order\" your order will be submitted and you will receive a confirmation message on the following page
   Examples:
   | email                 | password  |
-  | t.d.etundra@gmail.com | Zxc123zxc |
+  | t.d.etundra@gmail.com |123456    |
 
   #18
   @checkout @tester
@@ -283,24 +306,24 @@ Feature: Smoke test
     And User should be logout
     Examples:
       | email                 | password  |
-      | t.d.etundra@gmail.com | Zxc123zxc |
+      | t.d.etundra@gmail.com | 123456 |
 
 #19
   Scenario Outline:Checkout
     Then Add Trending item from home page to cart
     Then Open cart
-    Then Click Proceed to Checkout button
+    Then Tap "Proceed to Checkout" button
     Then Enter email "<email>"
     And Enter valid password "<password>"
     And Tap "Sign In" button
-    Then Click Proceed to Checkout button
-    And Press "ADD NEW" button
+    Then Tap "Proceed to Checkout" button
+    And Tap "ADD NEW" button
 #    Then Enter "VISA" card number card month, year, cardholder name and cvv
     Examples:
       | email                   | password  |
-      | t.d.etundra10@gmail.com | 1234      |
+      | t.d.etundra10@gmail.com | 12334      |
 
-#20 @wip
+#20
   Scenario: Tracking order - Valid order number and valid postal code
     Then Click on "Track Order" icon
     And Enter valid Order number
@@ -345,18 +368,25 @@ Feature: Smoke test
     And Verify user relocated to "Track Order" page
     And Verify message "Please provide all information" displayed
     And Verify message "Please enter Order or Web Reference # and Destination Postal Code." displayed
-
-  Scenario Outline:Checkout
+#25
+  Scenario Outline: wip
     Then Add Trending item from home page to cart
     Then Open cart
-    Then Click Proceed to Checkout button
+    Then Tap "Proceed to Checkout" button
     Then Enter email "<email>"
     And Enter valid password "<password>"
     And Tap "Sign In" button
-    Then Click Proceed to Checkout button
+    Then Tap "Proceed to Checkout" button
+    Then Tap "PLACE YOUR ORDER" button
+    Then Verify message "Order Confirmation" displayed
+    Then Verify message "Thank you for placing your order" displayed
+    Then Verify message "Your web reference number for this order is" displayed
     Examples:
       | email                   | password    |
       | t.d.etundra@gmail.com   | 123456      |
+
+
+
 
 
 

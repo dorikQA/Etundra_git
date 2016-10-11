@@ -26,17 +26,10 @@ def item_page
   @item_page ||= ItemPage.new
 end
 
-def category_page
-  @category_page ||= CategoryPage.new
-end
-
 def facet_menu
   @facet_menu ||= FacetMenu.new
 end
 
-def brand_page
-  @brand_page ||= BrandPage.new
-end
 
 def sign_in_page
   @sign_in_page ||= SignInPage.new
@@ -54,9 +47,6 @@ def my_account_page
   @my_account_page ||= MyAccountPage.new
 end
 
-def my_buys
-  @my_buys ||= MyBuys.new
-end
 
 def home_page
   @home_page ||= HomePage.new

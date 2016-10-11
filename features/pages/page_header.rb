@@ -19,13 +19,11 @@ class PageHeader < ScreenActions
     end
   end
 
-
   def searchfield
     $driver.find_element(:xpath, "//input[@class = 'form-control valid' and contains(@placeholder,'Product name')]")
   end
 
   ####################################
-
   # def account_icon_option(popover_option)
   #   $driver.find_element(:xpath, "//span[@class = 'menu-label' and text() = '#{popover_option}']")
   # end
@@ -44,7 +42,6 @@ class PageHeader < ScreenActions
   def account_popover_header
     elements = $wait.until { $driver.find_elements(:xpath, "//div[@class = 'popover-header']") }
     puts elements.count
-
     # if elements.count > 0
     #   elements.each {|i| push(i.displayed? == true) }
     # end
@@ -56,9 +53,10 @@ class PageHeader < ScreenActions
   #   $wait.until {$driver.find_elements(:xpath, "//div[@class = 'popover-header']")}
   #
   # end
-  def account_popover_title(title)
+  def account_popover_title
     $driver.find_element(:xpath, "//div[@class = 'popover-header']/h3")
   end
+
 
   def myaccount_links(link_name)
     begin
@@ -66,19 +64,6 @@ class PageHeader < ScreenActions
     rescue
       raise "Fuck"
     end
-  end
-
-  def sign_in_link
-    $wait.until { $driver.find_element(:xpath, "//ul[@class = 'menu']//span[@class = 'menu-label' and text() = 'Sign In']") }
-
-  end
-  def sign_out_link
-    $wait.until { $driver.find_element(:xpath, "//ul[@class = 'menu']//span[@class = 'menu-label' and text() = 'Sign Out']") }
-  end
-
-  def my_account_link
-    $wait.until { $driver.find_element(:xpath, "//ul[@class = 'menu']//span[@class = 'menu-label' and text() = 'My Account']") }
-
   end
 
   def user_name
